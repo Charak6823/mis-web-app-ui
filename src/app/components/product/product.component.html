@@ -1,0 +1,16 @@
+<p>product works!</p>
+
+<button (click)="showMessage()">click me</button>
+<button (click)="onSubmit()">click me</button>
+
+<form [formGroup]="testFrm">
+  <input type="text" name="" id="" formControlName="name">
+  <div class="form-floating" formGroupName="address">
+    <select class="form-select" formControlName="provinceId">
+        <option *ngFor="let item of categoryMainList" [value]="item.id">{{item.name}}</option>
+    </select>
+    <label>ប្រភេទទំនិញមេ</label>
+  </div>
+</form>
+
+

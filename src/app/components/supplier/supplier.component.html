@@ -1,0 +1,113 @@
+<div class="card border-primary mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="h5 mb-0">អ្នកផ្គត់ផ្គង់</span> <!-- Table name styled as heading -->
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('create')"><span class="px-1"><i class="bi bi-plus-square"></i></span>បញ្ជូលថ្មី</button>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped" id="dtSupplier" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th>ល.រ.</th>
+          <th>ឈ្មោះក្រុមហ៊ុនផ្គត់ផ្គង់</th>
+          <th>ឈ្មោះទំនាក់ទំនង</th>
+          <th>ភេទ</th>
+          <th>លេខទូរស័ព្ទ</th>
+          <th>ឃ្លាំង</th>
+          <th>សកម្មភាព</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of supplierList, let i = index">
+          <td>{{supplierList.length - i}}</td>
+          <td>{{data.supplierName}}</td>
+          <td>{{data.contactName}}</td>
+          <td>{{data.sex}}</td>
+          <td>{{data.contactPhone}}</td>
+          <td>{{data.warehouse?.warehouseName}}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('read', data)"><i class="bi bi-eye"></i></button>
+            <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('update', data)"><i class="bi bi-pen"></i></button>
+            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('delete', data)"><i class="bi bi-trash3"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="supplierFrm" class="form">
+          <div class="row" hidden>
+            <div class="mb-3 col-12">
+              <label for="supplierId" class="form-label">Supplier ID</label>
+              <input type="text" formControlName="supplierId" id="supplierId" class="form-control" placeholder="Supplier ID" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-6">
+              <label for="supplierName" class="form-label">អ្នកផ្គត់ផ្គង់/ក្រុមហ៊ុន/ភ្ញៀវ</label>
+              <input formControlName="supplierName" type="text" id="supplierName" class="form-control" placeholder="MIS">
+              <div *ngIf="supplierFrm.get('supplierName')?.touched && supplierFrm.get('supplierName')?.invalid" class="text-danger">
+                <div *ngIf="supplierFrm.get('supplierName')?.errors">Supplier Name is required.</div>
+              </div>
+            </div>
+            <div class="mb-3 col-6">
+              <label for="contactName" class="form-label">ឈ្មោះទំនាក់ទំនង</label>
+              <input type="text" formControlName="contactName" id="contactName" class="form-control" placeholder="សូរ សូវ៉ាន់">
+              <div *ngIf="supplierFrm.get('contactName')?.touched && supplierFrm.get('contactName')?.invalid" class="text-danger">
+                <div *ngIf="supplierFrm.get('contactName')?.errors">Contact Name is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-6">
+              <label for="contactPhone" class="form-label">លេខទូរស័ព្ទ</label>
+              <input type="tel" formControlName="contactPhone" id="contactPhone" class="form-control" placeholder="023456789" required>
+              <div *ngIf="supplierFrm.get('contactPhone')?.touched && supplierFrm.get('contactPhone')?.invalid" class="text-danger">
+                <div *ngIf="supplierFrm.get('contactPhone')?.errors">Contact Phone is required.</div>
+                <div *ngIf="supplierFrm.get('contactPhone')?.errors">Contact Phone must be a valid 10-digit number.</div>
+              </div>
+            </div>
+            <div class="mb-3 col-6">
+              <label for="sex" class="form-label">ភេទ</label>
+              <select formControlName="sex" id="sex" class="form-select">
+                <option value="" disabled selected>ជ្រើសរើសភេទ</option>
+                <option value="M">ប្រុស</option>
+                <option value="F">ស្រី</option>
+              </select>
+              <div *ngIf="supplierFrm.get('sex')?.touched && supplierFrm.get('sex')?.invalid" class="text-danger">
+                <div *ngIf="supplierFrm.get('sex')?.errors">Sex is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">អាសយដ្ឋាន</label>
+            <textarea formControlName="address" id="address" class="form-control" placeholder="អាសយដ្ឋាន"></textarea>
+            <div *ngIf="supplierFrm.get('address')?.touched && supplierFrm.get('address')?.invalid" class="text-danger">
+              <div *ngIf="supplierFrm.get('address')?.errors">Address is required.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">ចំណាំ</label>
+            <textarea formControlName="description" id="description" class="form-control" placeholder="មិនបាច់ក៏បាន"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnClose" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" *ngIf="btnSave" (click)="onSubmit()">រក្សាទុក</button>
+        <button type="button" class="btn btn-success" *ngIf="btnEdit" (click)="onSubmit()">កែប្រែ</button>
+        <button type="button" class="btn btn-danger" *ngIf="btnRemove" (click)="onSubmit()">លុប</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="card border-primary mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="h5 mb-0">ប្រភេទទំនិញ</span>
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
+      (click)="handleCRUD('create')">បញ្ជូលថ្មី</button>
+  </div>
+  <div class="card-body">
+    <table id="dtCategory" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="dtCategory" class="table">
+      <thead>
+        <tr>
+          <th>ល.រ.</th>
+          <th>ឈ្មោះខ្មែរ</th>
+          <th>ឈ្មោះអង់គ្លេស</th>
+          <th>ប្រភេទទំនិញមេ</th>
+          <th>ពិពណ៌នា</th>
+          <th>សកម្មភាព</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of categoryList, let i = index">
+          <td>{{categoryList.length - i}}</td>
+          <td>{{data.categoryNameKh}}</td>
+          <td>{{data.categoryName}}</td>
+          <td>{{data.categoryMain?.name}}</td>
+          <td>{{data.remark}}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"
+              (click)="handleCRUD('read', data)">មើល</button>
+            <button class="btn btn-success btn-sm m-1" data-bs-toggle="modal" data-bs-target="#modal"
+              (click)="handleCRUD('update', data)">កែប្រែ</button>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal"
+              (click)="handleCRUD('delete', data)">លុប</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnClose"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="categoryFrm">
+          <div class="form-floating mb-3" *ngIf="action !== 'create'" hidden>
+            <input type="text" class="form-control" formControlName="categoryId">
+            <label>ID</label>
+          </div>
+          <div class="form-floating mb-3 has-validation">
+            <input type="text" class="form-control" formControlName="categoryName"/>
+            <label>ប្រភេទទំនិញជាភាសាអង់គ្លេស</label>
+            <div *ngIf="categoryName?.touched && categoryName?.invalid" class="text-danger">
+              <div *ngIf="categoryName?.errors">This field is required.</div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" formControlName="categoryNameKh">
+            <label>ប្រភេទទំនិញជាភាសាខ្មែរ</label>
+          </div>
+          <div class="form-floating mb-3" formGroupName="categoryMain">
+            <select class="form-select" formControlName="categoryMainId">
+              <option *ngFor="let item of categoryMainList" [value]="item.categoryMainId">{{item.name}}</option>
+            </select>
+            <label>ប្រភេទទំនិញមេ</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea class="form-control" formControlName="remark"></textarea>
+            <label>ពិពណ៌នា</label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">បិទ</button>
+            <button type="submit" *ngIf="btnSave" class="btn btn-primary" (click)="onSubmit()">រក្សាទុក</button>
+            <button type="submit" [disabled]="categoryFrm.invalid" *ngIf="btnEdit" class="btn btn-success" (click)="onSubmit()">កែប្រែ</button>
+            <button type="submit" *ngIf="btnRemove" class="btn btn-danger" (click)="onSubmit()">លុប</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

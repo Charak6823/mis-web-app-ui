@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span class="h5 mb-0">ក្រុមហ៊ុន</span> <!-- Table name styled as heading -->
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('create')">បញ្ជូលថ្មី</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table" id="dtCompany" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">ឈ្មោះក្រុមហ៊ុន</th>
+              <th scope="col">ពិពណ៌នា</th>
+              <th scope="col">ស្ថានភាព</th>
+              <th>សកម្មភាព</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of companyList">
+              <td>{{data.companyName}}</td>
+              <td>{{data.description}}</td>
+              <td [ngClass]="data.status ? 'text-success' : 'text-danger'">
+                {{ data.status ? 'Active' : 'Disable' }}
+              </td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('read', data)">មើល</button>
+                <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('update', data)">កែប្រែ</button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('delete', data)">លុប</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnClose"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="companyFrm">
+            <div class="form-group" hidden>
+              <label for="companyId">CompanyID</label>
+              <input type="text" formControlName="companyId" class="form-control" id="CompanyId" readonly>
+            </div>
+            <div class="form-group mb-3">
+              <label for="companyName">ឈ្មោះក្រុមហ៊ុន</label>
+              <input type="text" formControlName="companyName" class="form-control" id="companyName">
+            </div>
+            <div class="form-group mb-3">
+              <label for="description">ពិពណ៌នា</label>
+              <input type="text" formControlName="description" class="form-control" id="description">
+            </div>
+            <div class="mb-3">
+              <label for="status">ស្ថានភាព</label>
+              <select class="form-select" formControlName="status" id="status">
+                <option value="true">Active</option>
+                <option value="false">Disable</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnClose" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" *ngIf="btnSave" (click)="onSubmit()">រក្សាទុក</button>
+          <button type="button" class="btn btn-success" *ngIf="btnEdit" (click)="onSubmit()">កែប្រែ</button>
+          <button type="button" class="btn btn-danger" *ngIf="btnRemove" (click)="onSubmit()">លុប</button>
+        </div>
+      </div>
+    </div>
+  </div>

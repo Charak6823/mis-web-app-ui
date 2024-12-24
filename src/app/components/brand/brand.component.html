@@ -1,0 +1,78 @@
+<div class="card">
+  <div class="card-content">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span class="h5 mb-0">ម៉ាក់យីហោ</span> <!-- Table name styled as heading -->
+      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
+        (click)="handleCRUD('create')"><span class="px-1"><i class="bi bi-plus-square"></i></span>បញ្ជូលថ្មី</button>
+    </div>
+    <div class="card-body">
+      <table class="table" id="dtBrands" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr>
+            <th scope="col">ឈ្មោះម៉ាក់</th>
+            <th scope="col">ឈ្មោះកាត់</th>
+            <th scope="col">ស្ថានភាព</th>
+            <th>សកម្មភាព</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of brandList">
+            <td>{{data.brandName}}</td>
+            <td>{{data.shortName}}</td>
+            <td [ngClass]="data.status == 'ACT' ? 'text-success' : 'text-danger'">
+              {{ data.status == 'ACT'?'Active' : 'Inactive' }}
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal"
+                (click)="handleCRUD('read', data)">មើល</button>
+              <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal"
+                (click)="handleCRUD('update', data)">កែប្រែ</button>
+              <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal"
+                (click)="handleCRUD('delete', data)">លុប</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnClose"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="brandFrm">
+          <div class="form-group" hidden>
+            <label for="brandId">BrandID</label>
+            <input type="text" formControlName="brandId" class="form-control" id="BrandId" readonly>
+          </div>
+          <div class="form-group mb-3">
+            <label for="name">ឈ្មោះប្រែន</label>
+            <input type="text" formControlName="brandName" class="form-control" id="name">
+          </div>
+          <div class="form-group mb-3">
+            <label for="discription">ឈ្មោះកាត់</label>
+            <input type="text" formControlName="shortName" class="form-control" id="shortName">
+          </div>
+
+            <label for="status">ស្ថានភាព</label>
+            <select class="form-select" formControlName="status" id="status">
+              <option value="ACT">Active</option>
+              <option value="DEL">Inactive</option>
+            </select>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnClose" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" *ngIf="btnSave" (click)="onSubmit()">រក្សាទុក</button>
+        <button type="button" class="btn btn-success" *ngIf="btnEdit" (click)="onSubmit()">កែប្រែ</button>
+        <button type="button" class="btn btn-danger" *ngIf="btnRemove" (click)="onSubmit()">លុប</button>
+      </div>
+    </div>
+  </div>
+</div>

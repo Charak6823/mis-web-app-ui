@@ -1,0 +1,126 @@
+<div class="card border-primary mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="h5 mb-0">សាខា</span> <!-- Table name styled as heading -->
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('create')"><span class="px-1"><i class="bi bi-plus-square"></i></span>បន្ថែម</button>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped" id="dtWarehouse" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>កូដឃ្លាំង</th>
+          <th>ឈ្មោះឃ្លាំង</th>
+          <th>ម្ចាស់ឃ្លាំង</th>
+          <th>លេខទូរស័ព្ទ</th>
+          <th>ពន្ធអាករ</th>
+          <th>ស្ថានភាព</th>
+          <th>សកម្មភាព</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of warehouseList, let i = index">
+          <td>{{i+1}}</td>
+          <td>{{data.warehouseCode}}</td>
+          <td>{{data.warehouseName}}</td>
+          <td>{{data.ownerName}}</td>
+          <td>{{data.phone}}</td>
+          <td>
+            <div class="form-check form-switch">
+              <input type="checkbox"
+                     class="form-check-input"
+                     [checked]="data?.tax"
+                     disabled
+              >
+            </div>
+          </td>
+          <td [ngClass]="data.status == 'ACT' ? 'text-success' : 'text-danger'">
+            {{data.status == 'ACT' ? 'Active':'Inactive'}}
+          </td>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('read', data)"><i class="bi bi-eye"></i></button>
+            <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('update', data)"><i class="bi bi-pen"></i></button>
+            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('delete', data)"><i class="bi bi-trash3"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="warehouseFrm" class="form">
+          <div class="row" hidden>
+            <div class="mb-3 col-12">
+              <label for="warehouseId" class="form-label">Warehouse ID</label>
+              <input type="text" formControlName="warehouseId" id="warehouseId" class="form-control" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-6">
+              <label for="warehouseName" class="form-label">ឈ្មោះឃ្លាំង</label>
+              <input formControlName="warehouseName" type="text" id="warehouseName" class="form-control">
+              <div *ngIf="warehouseFrm.get('warehouseName')?.touched && warehouseFrm.get('warehouseName')?.invalid" class="text-danger">
+                <div *ngIf="warehouseFrm.get('warehouseName')?.errors">This is required.</div>
+              </div>
+            </div>
+            <div class="mb-3 col-6">
+              <label for="warehouseCode" class="form-label">កូដឃ្លាំង</label>
+              <input type="text" formControlName="warehouseCode" id="warehouseCode" class="form-control">
+              <div *ngIf="warehouseFrm.get('warehouseCode')?.touched && warehouseFrm.get('warehouseCode')?.invalid" class="text-danger">
+                <div *ngIf="warehouseFrm.get('warehouseCode')?.errors">This field required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-6">
+              <label for="ownerName" class="form-label">ម្ចាស់ឃ្លាំង</label>
+              <input type="tel" formControlName="ownerName" id="ownerName" class="form-control" required>
+              <div *ngIf="warehouseFrm.get('ownerName')?.touched && warehouseFrm.get('ownerName')?.invalid" class="text-danger">
+                <div *ngIf="warehouseFrm.get('ownerName')?.errors">This field is required!</div>
+              </div>
+            </div>
+            <div class="mb-3 col-6">
+              <label for="phone" class="form-label">លេខទូរស័ព្ទ</label>
+              <input type="tel" formControlName="phone" id="phone" class="form-control" required>
+              <div *ngIf="warehouseFrm.get('phone')?.touched && warehouseFrm.get('phone')?.invalid" class="text-danger">
+                <div *ngIf="warehouseFrm.get('phone')?.errors">This field is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              <label for="status">ស្ថានភាព</label>
+              <select class="form-select form-select" aria-label=".form-select-sm example" formControlName="status">
+                <option value="ACT">active</option>
+                <option value="DEL">inactive</option>
+              </select>
+            </div>
+            <div class="col-6 mt-4">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" formControlName="tax">
+                <label class="form-check-label" for="flexCheckDefault">
+                  ពន្ធអាករ
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnClose" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" *ngIf="btnSave" (click)="onSubmit()">រក្សាទុក</button>
+        <button type="button" class="btn btn-success" *ngIf="btnEdit" (click)="onSubmit()">កែប្រែ</button>
+        <button type="button" class="btn btn-danger" *ngIf="btnRemove" (click)="onSubmit()">លុប</button>
+      </div>
+    </div>
+  </div>
+</div>

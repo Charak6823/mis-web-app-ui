@@ -1,0 +1,13 @@
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+  
+.nav-item.dropdown > a {
+    cursor: pointer;
+}
+
+@media screen and (max-width:400px){
+  .navbar{
+    margin-left: 0px;
+  }
+}

@@ -1,0 +1,90 @@
+/* Sidebar Styles */
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 220px;
+  background-color: #00152A;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 20px;
+  background-color: #2c3e50;
+}
+
+/* Circle Logo */
+.logo {
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Text Styles */
+.text {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 16px;
+  color: #0D6EFD;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: white;
+}
+
+/* Divider Line */
+.line {
+  width: 100%;
+  border: none;
+  border-top: 3px solid #ddd;
+  margin: 0;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  margin: 16px 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-link:hover {
+  background-color: darkgray;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.active {
+  color: white;
+  background-color: #0D6EFD;
+}

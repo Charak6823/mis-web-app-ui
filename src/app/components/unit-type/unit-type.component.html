@@ -1,0 +1,87 @@
+<div class="card">
+    <div class="card-content">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="h5 mb-0">ខ្នាតលក់</span> <!-- Table name styled as heading -->
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('create')">បញ្ជូលថ្មី</button>
+      </div>
+      <div class="card-body">
+        <table class="table" id="dtUnitType" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">ខ្នាតលក់ជាអង់គ្លេស</th>
+              <th scope="col">ខ្នាតលក់ជាភាសាខ្មែរ</th>
+              <th scope="col">ចំនួន</th>
+              <th scope="col">UnitQty</th>
+              <th>សកម្មភាព</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of unitTypeList">
+              <td>{{data.unitTypeName}}</td>
+              <td>{{data.unitTypeNameKh}}</td>
+              <td>{{data.qty}}</td>
+              <td>{{data.unitQty}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('read', data)">មើល</button>
+                <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('update', data)">កែប្រែ</button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal" (click)="handleCRUD('delete', data)">លុប</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade modal-lg" id="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnClose"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="unitTypeFrm">
+            <div class="form-group" hidden>
+              <label for="unitTypeId">UnitTypeId</label>
+              <input type="text" formControlName="unitTypeId" class="form-control" id="unitTypeId" readonly>
+            </div>
+            <div class="row">
+              
+                <div class="form-group mb-3 col-6">
+                  <label for="name">ខ្នាតលក់ជាអង់គ្លេស</label>
+                  <input type="text" formControlName="unitTypeName" class="form-control" id="name">
+                </div>
+                <div class="form-group mb-3 col-6">
+                  <label for="name">ខ្នាតលក់ជាភាសាខ្មែរ</label>
+                  <input type="text" formControlName="unitTypeNameKh" class="form-control" id="name">
+                </div>
+          
+            </div>
+            
+            <div class="row">
+              <div class="col-6 form-group">
+                <label for="Qty">ចំនួន</label>
+                <input type="number" class="form-control" formControlName="qty" id="Qty">
+              </div>
+              <div class="col-6">
+                <div class="form-check mt-4">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="unitQty" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    ខ្នាតស័ង្កសី​ UnitQty*Qty*Price
+                  </label>
+                </div>
+              </div>
+              
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnClose" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" *ngIf="btnSave" (click)="onSubmit()">រក្សាទុក</button>
+          <button type="button" class="btn btn-success" *ngIf="btnEdit" (click)="onSubmit()">កែប្រែ</button>
+          <button type="button" class="btn btn-danger" *ngIf="btnRemove" (click)="onSubmit()">លុប</button>
+        </div>
+      </div>
+    </div>
+  </div>
